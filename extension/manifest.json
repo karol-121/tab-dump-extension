@@ -10,12 +10,12 @@
     "scripts": ["worker.js"]
   },
   "icons": {
-    "32": "find.svg"
+    "48": "icons/icon-48.png"
   },
   "browser_action": {
     "default_title": "Tab dump",
     "default_icon": {
-        "32": "find.svg"
+        "48": "icons/icon-48.png"
     },
     "default_popup": "gui/page.html"
   },

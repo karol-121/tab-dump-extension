@@ -3,15 +3,20 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="page.css">
 	<title>Tab dump</title>
 	
 </head>
 <body>
-	<textarea id="text" rows="30" cols="50" ></textarea>
-	<br>
-	<button id="get_button">Get</button>
-	<button id="open_button">Open</button>
+	<h3>open or get current tab set</h3>
 
+	<textarea id="text" class="action-input" rows="30" cols="50" placeholder="input urls here, each in new line" ></textarea>
+
+	<div class="container">
+		<button id="get_button" class="action-button">Get</button>
+		<button id="open_button" class="action-button">Open</button>
+	</div>
+	
 	<script src="page.js"></script>
 </body>
 </html>

@@ -1,0 +1,16 @@
+body {
+	font-family: 'arial', sans-serif;
+}
+
+.container {
+	display: flex;
+}
+
+.action-input {
+	resize: none;
+
+}
+
+.action-button {
+	flex-grow: 1;
+}
