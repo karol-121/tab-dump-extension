@@ -1,0 +1,28 @@
+{
+  "name": "Tab dump",
+  "description": "Allow to save and load set of tabs in form of a text",
+  "manifest_version": 2,
+  "permissions": [
+    "find",
+    "tabs"
+  ],
+  "background": {
+    "scripts": ["worker.js"]
+  },
+  "icons": {
+    "32": "find.svg"
+  },
+  "browser_action": {
+    "default_title": "Tab dump",
+    "default_icon": {
+        "32": "find.svg"
+    },
+    "default_popup": "gui/page.html"
+  },
+  "version": "1.0",
+  "browser_specific_settings": {
+    "gecko": {
+      "strict_min_version": "57.0a1"
+    }
+  }
+}
