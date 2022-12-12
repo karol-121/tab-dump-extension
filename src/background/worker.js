@@ -21,6 +21,7 @@ function handleMessage(request, sender, response) {
 //function that creates tab for each url found in urls array
 function open(urls) {
   for (const url of urls) {
+    //TODO: research if it is possible to define the mode new tab is created, ideally it should only fully load if user activate it.
     browser.tabs.create({
       "url": url
     });

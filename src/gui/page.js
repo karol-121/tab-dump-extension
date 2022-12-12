@@ -22,7 +22,7 @@ let lastTextareaValue = "";
 
 document.getElementById("get_button").addEventListener("click", function(e) {
 
-	//stuff to do before initiating get request
+	//stuff to do before initiating get-request
 
 	//initiate a get-request for background worker
 	browser.runtime.sendMessage({action: "get", status: "initiated"});
@@ -36,28 +36,37 @@ document.getElementById("open_button").addEventListener("click", function(e) {
 	//check if current list/text does match with previous get, if so do not execute
 	//otherwise it will be possible to repeatedly open the same set of tabs, get print list of tabs that is possible to open
 		
-		if (textareaValue != lastTextareaValue) {
-			const urls = textareaValue.split(/\r?\n/);
+	if (textareaValue != lastTextareaValue) {
+		
+		//TODO: here create function to extract urls from text to array
 
-			//here go through the array and remove all "empty" lines (ones that include white space chars)
+		const urls = textareaValue.split(/\r?\n/);
 
-			//initiate a open-request for background worker
-			browser.runtime.sendMessage({action: "open", status: "initiated", param: urls});
-			
-		}
+		//here go through the array and remove all "empty" lines (ones that include white space chars)
+
+
+		//initiate a open-request for background worker
+		browser.runtime.sendMessage({action: "open", status: "initiated", param: urls});
+
+	}
+
 });
 
 
+//defines actions that happens after open-request is fulfilled 
 function handle_open() {
 	textarea.value = "";
 }
 
+//defines actions that happens after get-request is fulfilled
 function handle_get(urls) {
+
+	//print all urls, each in new line to textarea:
 	let text = "";
 
 	for (const url of urls) {
-		let a = url + '\n';
-		text += a;
+		let string = url + '\n';
+		text += string;
 	}
 
 	lastTextareaValue = text;
