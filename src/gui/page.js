@@ -34,16 +34,20 @@ document.getElementById("open_button").addEventListener("click", function(e) {
 	let textareaValue = textarea.value;
 
 	//check if current list/text does match with previous get, if so do not execute
-	//otherwise it will be possible to repeatedly open the same set of tabs, get print list of tabs that is possible to open
-		
+	//otherwise it will be possible to repeatedly open the same set of tabs, get print list of tabs that is possible to open	
 	if (textareaValue != lastTextareaValue) {
 		
-		//TODO: here create function to extract urls from text to array
+		const regexUrl = /\S{3,}/gm;
+		const urls = new Array();
+		
+		let tempArray;
+		
+		while ((tempArray = regexUrl.exec(textareaValue)) !== null) {
+  		
+  		//extract only match from exec function
+  		urls.push(tempArray[0]);
 
-		const urls = textareaValue.split(/\r?\n/);
-
-		//here go through the array and remove all "empty" lines (ones that include white space chars)
-
+		}
 
 		//initiate a open-request for background worker
 		browser.runtime.sendMessage({action: "open", status: "initiated", param: urls});
