@@ -1,4 +1,5 @@
-//handle communication here, have to use it as this is the only way to get communication with the background script in incognito mode
+//handle communication with background script here.
+//have to use messages as this is the only way to get communication with the background script in incognito mode
 browser.runtime.onMessage.addListener(handleMessage);
 
 function handleMessage(request, sender, response) {
@@ -20,32 +21,32 @@ function handleMessage(request, sender, response) {
 const textarea = document.getElementById("text");
 let lastTextareaValue = "";
 
+//"get" button has been clicked
 document.getElementById("get_button").addEventListener("click", function(e) {
-
-	//stuff to do before initiating get-request
 
 	//initiate a get-request for background worker
 	browser.runtime.sendMessage({action: "get", status: "initiated"});
 
 });
 
+//"open" button has been clicked
 document.getElementById("open_button").addEventListener("click", function(e) {
 
+	//get text from textarea
 	let textareaValue = textarea.value;
 
 	//check if current list/text does match with previous get, if so do not execute
 	//otherwise it will be possible to repeatedly open the same set of tabs, get print list of tabs that is possible to open	
 	if (textareaValue != lastTextareaValue) {
-		
-		const regexUrl = /\S{3,}/gm;
+
+		//retrive valid urls from text
 		const urls = new Array();
-		
-		let tempArray;
-		
-		while ((tempArray = regexUrl.exec(textareaValue)) !== null) {
-  		
-  		//extract only match from exec function
-  		urls.push(tempArray[0]);
+		const values = textareaValue.split(/\s/gm);
+
+		for (value of values) {
+
+			let url = fixUrl(value);
+			urls.push(url);
 
 		}
 
@@ -55,6 +56,25 @@ document.getElementById("open_button").addEventListener("click", function(e) {
 	}
 
 });
+
+//function that fixes urls (making them valid)
+function fixUrl(value) {
+	const startWithProtocol = /\S{1,5}:\/\/\S*/gm; //match values that begins with protocol
+	const defaultProtocol = "https://"; //protocol to append if link does not contain such
+
+	//if value (link) is shorter than 5 chars, return as it is not valid link
+	if(value.length < 5) {
+		return;
+	}
+
+	//if value (link) does not start with protocol
+	if(!startWithProtocol.test(value)) {
+		value = defaultProtocol + value; //add default protocol to link, otherwise browser will treat it as local link
+	}
+
+	return value;
+
+}
 
 
 //defines actions that happens after open-request is fulfilled 
