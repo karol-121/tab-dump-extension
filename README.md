@@ -11,7 +11,7 @@ Extension implements a simple GUI where the user can either enter or retrieve li
 *Extension's GUI*
 
 ## Installation:
-Currently this under initial development and therefore it is not published yet. However it can be installed in form of local debug version.
+Available for Firefox via: https://addons.mozilla.org/firefox/addon/tab-dump/
 
 ## To do
 Address To do's in source code.
