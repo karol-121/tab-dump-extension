@@ -1,14 +1,36 @@
 body {
 	font-family: 'arial', sans-serif;
+	display: flex;
+	flex-direction: column;
 }
 
-.container {
+
+
+.form-options {
 	display: flex;
+	justify-content: space-between;
 }
+
+.form-option {
+	/*flex-grow: 1;*/
+}
+
+
 
 .action-input {
+
+	margin: 0.75em 0;
+
+	font-family: 'consolas', sans-serif;
+	width: 380px;
+	height: 400px;
 	resize: none;
 
+
+}
+
+.action-buttons {
+	display: flex;
 }
 
 .action-button {

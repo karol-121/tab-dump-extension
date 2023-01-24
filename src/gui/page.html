@@ -9,14 +9,24 @@
 </head>
 <body>
 	<h3>Open or dump tabs</h3>
+	
+	<div>
+		<div class="form-options">
+			<div class="form-option">
+				<input id="wrap" type="checkbox" checked></input>
+				<label for="wrap">Wrap urls</label>
+			</div>
+			<button id="reset_button" class="form-option">Clear list</button>
+		</div>
+		<textarea id="text" class="action-input" wrap="on" placeholder="Input urls here..." ></textarea>
+	</div>
 
-	<textarea id="text" class="action-input" rows="30" cols="50" placeholder="Input urls here..." ></textarea>
-
-	<div class="container">
-		<button id="get_button" class="action-button">Dump current tabs</button>
-		<button id="open_button" class="action-button">Open specified tabs</button>
+	<div class="action-buttons">
+		<button id="get_button" class="action-button">▼ Dump tabs</button>
+		<button id="open_button" class="action-button">▲ Open tabs</button>
 	</div>
 	
 	<script src="page.js"></script>
 </body>
 </html>
+
