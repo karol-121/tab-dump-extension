@@ -1,19 +1,34 @@
-//function that fixes URLs (making them valid)
-function fixUrl(value) {
+//functions that extract url values from user input
+function extractUrls(text) {
+	const matchComments = /^#.+/gm //matches strings that starts with "#"
+	const matchUrls = /\S+/gm //matches text blocks separated with white space 
 	const startWithProtocol = /\S{1,5}:\/\/\S*/gm; //match values that begins with protocol
 	const defaultProtocol = "https://"; //protocol to append if link does not contain such
 
-	//if value (link) is shorter than 5 chars, return as it is not valid link
-	if(value.length < 5) {
-		return;
+	const urls = new Array();
+
+	let urlsTemp = text;
+
+	//removing lines that starts with "#" as those are comments 
+	urlsTemp = urlsTemp.replaceAll(matchComments, "");
+
+	//creating match with everything but white spaces
+	const urlMatches = urlsTemp.matchAll(matchUrls);
+
+	//retrieving urls from matches
+	for (const urlMatch of urlMatches) {
+
+		let url = urlMatch[0];
+
+		//add default protocol to link if missing, otherwise browser will fail to open this url
+		if(!startWithProtocol.test(url)) {
+			url = defaultProtocol + url; 
+		}
+
+		urls.push(url);
 	}
 
-	//if value (link) does not start with protocol
-	if(!startWithProtocol.test(value)) {
-		value = defaultProtocol + value; //add default protocol to link, otherwise browser will treat it as local link
-	}
-
-	return value;
+	return urls;
 }
 
 //defines actions that happens after open-request is fulfilled 
@@ -92,16 +107,8 @@ document.getElementById("open_button").addEventListener("click", function(e) {
 	//otherwise it will be possible to repeatedly open the same set of tabs, get print list of tabs that is possible to open	
 	if (textareaValue != lastTextareaValue) {
 
-		//retrieve and fix URLs from text
-		const urls = new Array();
-		const values = textareaValue.split(/\s/gm);
-
-		for (value of values) {
-
-			let url = fixUrl(value);
-			urls.push(url);
-
-		}
+		//get urls from user input
+		const urls = extractUrls(textareaValue);
 
 		//initiate a open-request for background worker
 		browser.runtime.sendMessage({action: "open", status: "initiated", param: urls});
