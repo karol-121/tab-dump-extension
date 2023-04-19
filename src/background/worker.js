@@ -7,7 +7,7 @@ function handleMessage(request, sender, response) {
   if (request.status === "initiated") {
 
     if (request.action === "get") {
-      save();
+      get(request);
     }
 
     if (request.action === "open") {
@@ -32,16 +32,22 @@ function open(urls) {
 
 
 //function that return array of urls of all tabs in current window
-async function save() {
+async function get() {
 
-  const tabs = await browser.tabs.query({ currentWindow: true });
-  const urls = [];
+  const openedTabs = await browser.tabs.query({ currentWindow: true }); //gets list of current opened tabs
+  const dumpedTabs = []; //array where information about tabs will be send to the user
 
-  for (const tab of tabs) {
-    if (tab.url) {
-      urls.push(tab.url);
+  //strip uneeded information about the tabs
+  for (const openedTab of openedTabs) {
+
+    const dumpedTab = {
+      url: openedTab.url,
+      title: openedTab.title
     }
+    
+    dumpedTabs.push(dumpedTab);
+    
   } 
 
-  browser.runtime.sendMessage({action: "get", status: "fulfilled", param: urls});
+  browser.runtime.sendMessage({action: "get", status: "fulfilled", param: dumpedTabs});
 }

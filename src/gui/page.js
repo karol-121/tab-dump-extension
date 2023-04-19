@@ -2,7 +2,7 @@
 function extractUrls(text) {
 	const matchComments = /^#.+/gm //matches strings that starts with "#"
 	const matchUrls = /\S+/gm //matches text blocks separated with white space 
-	const startWithProtocol = /\S{1,5}:\/\/\S*/gm; //match values that begins with protocol
+	const startWithProtocol = /^\S{1,5}:\/\/\S*/; //match values that begins with protocol
 	const defaultProtocol = "https://"; //protocol to append if link does not contain such
 
 	const urls = new Array();
@@ -31,18 +31,24 @@ function extractUrls(text) {
 	return urls;
 }
 
-//defines actions that happens after open-request is fulfilled 
+//defines actions that happens after open-request is fulfilled
 function handleOpen() {
 	textarea.value = "";
 }
 
 //defines actions that happens after get-request is fulfilled
-function handleGet(urls) {
+function handleGet(tabs) {
 	//print all urls, each in new line to textarea:
 	let text = "";
 
-	for (const url of urls) {
-		let string = url + '\n';
+	for (const tab of tabs) {
+		
+		if (returnTitles) {
+			let string = "#" + tab.title + '\n';
+			text += string;
+		}
+
+		let string =  tab.url + '\n\n';
 		text += string;
 	}
 
@@ -73,7 +79,9 @@ function handleMessage(request, sender, response) {
 
 const textarea = document.getElementById("text");
 const wrapCheckbox = document.getElementById("wrap");
+const titlesCheckbox = document.getElementById("titles");
 let lastTextareaValue = "";
+let returnTitles = false;
 
 //handle communication with background script here.
 //have to use messages as this is the only way to get communication with the background script in incognito mode
@@ -88,6 +96,11 @@ wrapCheckbox.addEventListener("click", function(e) {
 	}
 });
 
+//"return tab titles" checkbox has been clicked
+titlesCheckbox.addEventListener("click", function(e) {
+	returnTitles = titlesCheckbox.checked;
+});
+
 document.getElementById("reset_button").addEventListener("click", function(e) {
 	textarea.value = "";
 });
@@ -95,6 +108,7 @@ document.getElementById("reset_button").addEventListener("click", function(e) {
 //"get" button has been clicked
 document.getElementById("get_button").addEventListener("click", function(e) {
 	//initiate a get-request for background worker
+
 	browser.runtime.sendMessage({action: "get", status: "initiated"});
 });
 
