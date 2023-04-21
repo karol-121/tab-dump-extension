@@ -18,7 +18,17 @@ function handleGet(tabs) {
 	//show results to the user
 	lastTextareaValue = text; //this value is used to check if changes were made to text-area since showing
 	textarea.value = text;
+
 }
+
+
+//function that recieves and distributes user preferences from background
+function handlePrefs(prefs) {
+	lastTextareaValue = prefs.input;
+	textarea.value = prefs.input;
+
+}
+
 
 //function that handles messages
 function handleMessage(request, sender, response) {
@@ -34,6 +44,9 @@ function handleMessage(request, sender, response) {
    		handleOpen();
   	}
 
+  	if (request.action === "readPrefs") {
+  		handlePrefs(request.param);
+  	}
 	}
 }
 
@@ -50,6 +63,21 @@ let returnTitles = false;
 //handle communication with background script here.
 //have to use messages as this is the only way to get communication with the background script in incognito mode
 browser.runtime.onMessage.addListener(handleMessage);
+
+//read user prefs from background
+browser.runtime.sendMessage({action: "readPrefs", status: "initiated"});
+
+//send current user prefs to the background (where it will be saved) upon popup close
+window.addEventListener("pagehide", function(e) {
+
+	//collect user preferences to be saved
+	let prefs = {
+		input: textarea.value
+	};
+
+	browser.runtime.sendMessage({action: "updatePrefs", status: "initiated", param: prefs});
+
+});
 
 //"wrap" checkbox has been clicked
 wrapCheckbox.addEventListener("click", function(e) {

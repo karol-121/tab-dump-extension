@@ -1,6 +1,23 @@
 //handle communication here, have to use it as this is the only way to get communication with the background script in incognito mode
 browser.runtime.onMessage.addListener(handleMessage);
 
+//object that collect user preferences, here default values are defined
+let userPref = {
+  input: ""
+};
+
+function updateUserPref(prefs) {
+  userPref = prefs
+  //here this function can not call back page (popup) script as at this time it is closed
+}
+
+function readUserPref() {
+  browser.runtime.sendMessage({action: "readPrefs", status: "fulfilled", param: userPref});
+}
+
+
+
+
 function handleMessage(request, sender, response) {
   
   //care only about messages whose status is "initiated"
@@ -12,6 +29,14 @@ function handleMessage(request, sender, response) {
 
     if (request.action === "open") {
       open(request.param);
+    }
+
+    if (request.action === "updatePrefs") {
+      updateUserPref(request.param);
+    }
+
+    if (request.action === "readPrefs") {
+      readUserPref();
     }
   }
 
