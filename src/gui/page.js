@@ -9,28 +9,29 @@ function handleGet(tabs) {
 	
 	//print configuration
 	const printConfig = {
-		returnTitles: returnTitles
+		returnTitles: titlesCheckbox.checked
 	}
 
 	//convert list of tabs into text
 	const text = printUrls(tabs, printConfig);
 
 	//show results to the user
-	lastTextareaValue = text; //this value is used to check if changes were made to text-area since showing
 	textarea.value = text;
 
 }
 
-
 //function that recieves and distributes user preferences from background
 function handlePrefs(prefs) {
-	lastTextareaValue = prefs.input;
+
+	//set saved state to gui elements
 	textarea.value = prefs.input;
+	wrapCheckbox.checked = prefs.wrap;
+	titlesCheckbox.checked = prefs.titles;
 
 }
 
-
-//function that handles messages
+//function that handles message recieving 
+//this is not optimal way of doing this, but it does work for now
 function handleMessage(request, sender, response) {
   
   //care only about messages whose status is "fulfilled"
@@ -54,63 +55,137 @@ function handleMessage(request, sender, response) {
 //entry point
 //this is where script starts executing from
 
-const textarea = document.getElementById("text");
-const wrapCheckbox = document.getElementById("wrap");
-const titlesCheckbox = document.getElementById("titles");
-let lastTextareaValue = "";
-let returnTitles = false;
+//gui elements
+
+//textarea
+const textarea = {
+	source: document.getElementById("text"),
+	lastValue: "",
+
+	get value() {
+		return this.source.value;
+	},
+
+	set value(value) {
+		this.source.value = value;
+		this.lastValue = value;
+	},
+
+	get wrap() {
+
+		if (this.source.wrap === "on") {
+			return true;
+		}
+
+		if (this.source.wrap === "off") {
+			return false;
+		}
+
+	},
+
+	set wrap(bool) {
+
+		if (bool) {
+			this.source.wrap = "on";
+		}
+
+		if (!bool) {
+			this.source.wrap = "off";
+		}
+
+	},
+
+	hasChanged() {
+		return this.source.value !== this.lastValue;
+	}
+
+}
+
+//checkbox for returning titles
+const titlesCheckbox  = {
+	source: document.getElementById("titles"),
+
+	get checked() {
+		return this.source.checked;
+	},
+
+	set checked(bool) {
+		this.source.checked = bool;
+	}
+
+}
+
+//checkbox for textarea wrap
+const wrapCheckbox  = {
+	source: document.getElementById("wrap"),
+	onEvent: null,
+
+	get checked() {
+		return this.source.checked;
+	},
+
+	set checked(bool) {
+		this.source.checked = bool;
+		this.onEvent();
+	},
+
+	registerEventListener() {
+		this.source.addEventListener("click", this.onEvent);
+	}
+
+}
+
+//subscriber that react to toggling of wrap checkbox
+function toggleWrapCheckbox() {
+	textarea.wrap = wrapCheckbox.checked;
+}
+
+//arm wrap checkbox event listener
+wrapCheckbox.onEvent = toggleWrapCheckbox;
+wrapCheckbox.registerEventListener();
+
 
 //handle communication with background script here.
 //have to use messages as this is the only way to get communication with the background script in incognito mode
 browser.runtime.onMessage.addListener(handleMessage);
-
-//read user prefs from background
-browser.runtime.sendMessage({action: "readPrefs", status: "initiated"});
 
 //send current user prefs to the background (where it will be saved) upon popup close
 window.addEventListener("pagehide", function(e) {
 
 	//collect user preferences to be saved
 	let prefs = {
-		input: textarea.value
+		input: textarea.value,
+		wrap: wrapCheckbox.checked,
+		titles: titlesCheckbox.checked
 	};
 
 	browser.runtime.sendMessage({action: "updatePrefs", status: "initiated", param: prefs});
 
 });
 
-//"wrap" checkbox has been clicked
-wrapCheckbox.addEventListener("click", function(e) {
-	if (wrapCheckbox.checked) {
-		textarea.wrap = "on";
-	} else {
-		textarea.wrap = "off";
-	}
-});
+//read user prefs from background
+browser.runtime.sendMessage({action: "readPrefs", status: "initiated"});
 
-//"return tab titles" checkbox has been clicked
-titlesCheckbox.addEventListener("click", function(e) {
-	returnTitles = titlesCheckbox.checked;
-});
 
+//react to "reset" button being clicked
 document.getElementById("reset_button").addEventListener("click", function(e) {
 	textarea.value = "";
 });
 
-//"get" button has been clicked
+//react to "get" button being clicked
 document.getElementById("get_button").addEventListener("click", function(e) {
 	//initiate a get-request for background worker
 	browser.runtime.sendMessage({action: "get", status: "initiated"});
 });
 
-//"open" button has been clicked
+//react to "open" button being clicked
 document.getElementById("open_button").addEventListener("click", function(e) {
-	//get text from textarea
-	let textareaValue = textarea.value;
 
 	//check if current list/text does match with previous get, if so do not execute
 	//otherwise it will be possible to repeatedly open the same set of tabs, get print list of tabs that is possible to open	
-	if (textareaValue != lastTextareaValue) {
+	if (textarea.hasChanged()) {
+
+		let textareaValue = textarea.value;
 
 		//get urls from user input
 		const urls = extractUrls(textareaValue);

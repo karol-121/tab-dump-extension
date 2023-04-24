@@ -3,12 +3,13 @@ browser.runtime.onMessage.addListener(handleMessage);
 
 //object that collect user preferences, here default values are defined
 let userPref = {
-  input: ""
+  input: "",
+  wrap: true,
+  titles: false
 };
 
 function updateUserPref(prefs) {
   userPref = prefs
-  //here this function can not call back page (popup) script as at this time it is closed
 }
 
 function readUserPref() {
@@ -16,8 +17,8 @@ function readUserPref() {
 }
 
 
-
-
+//function that handles message recieving 
+//this is not optimal way of doing this, but it does work for now
 function handleMessage(request, sender, response) {
   
   //care only about messages whose status is "initiated"
