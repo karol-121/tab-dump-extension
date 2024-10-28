@@ -7,7 +7,7 @@
     "tabs"
   ],
   "background": {
-    "scripts": ["background/worker.js"]
+    "scripts": ["background/userDataBuffer.js","background/worker.js"]
   },
   "icons": {
     "48": "icons/icon-48.png"
@@ -19,7 +19,7 @@
     },
     "default_popup": "gui/page.html"
   },
-  "version": "1.2",
+  "version": "2",
   "browser_specific_settings": {
     "gecko": {
       "strict_min_version": "57.0a1"

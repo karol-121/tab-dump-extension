@@ -1,19 +1,15 @@
 //handle communication here, have to use it as this is the only way to get communication with the background script in incognito mode
 browser.runtime.onMessage.addListener(handleMessage);
 
-//object that collect user preferences, here default values are defined
-let userPref = {
-  input: "",
-  wrap: true,
-  titles: false
-};
-
 function updateUserPref(prefs) {
-  userPref = prefs
+  userDataBuffer.setUserData(prefs)
 }
 
-function readUserPref() {
-  browser.runtime.sendMessage({action: "readPrefs", status: "fulfilled", param: userPref});
+async function readUserPref() {
+  const currentWindow = await browser.windows.getCurrent();
+
+  const userPrefs = userDataBuffer.readUserData(currentWindow.id);
+  browser.runtime.sendMessage({action: "readPrefs", status: "fulfilled", param: userPrefs});
 }
 
 
