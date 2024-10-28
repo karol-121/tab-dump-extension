@@ -6,18 +6,12 @@ function handleOpen() {
 
 //defines actions that happens after get-request is fulfilled
 function handleGet(tabs) {
-	
-	//print configuration
-	const printConfig = {
-		returnTitles: titlesCheckbox.checked
-	}
 
-	//convert list of tabs into text
-	const text = printUrls(tabs, printConfig);
+	tabPrinter.tabs = tabs;
+	tabPrinter.printConfig = {returnTitles: titlesCheckbox.checked};
+	tabPrinter.target = textarea;
 
-	//show results to the user
-	textarea.value = text;
-
+	tabPrinter.print();
 }
 
 //function that recieves and distributes user preferences from background
@@ -54,6 +48,28 @@ function handleMessage(request, sender, response) {
 
 //entry point
 //this is where script starts executing from
+
+//utils:
+
+//todo: refactor this afterwards:
+//converts array of tabs to text
+const tabPrinter = {
+	tabs: [],
+	printConfig: {
+		returnTitles: true
+	},
+	target: null,
+
+	print() {
+		if (!this.target) {
+			return;
+		}
+
+		const text = printUrls(this.tabs, this.printConfig);
+		this.target.value = text;
+	}
+}
+
 
 //gui elements
 
@@ -104,6 +120,7 @@ const textarea = {
 //checkbox for returning titles
 const titlesCheckbox  = {
 	source: document.getElementById("titles"),
+	onEvent: null,
 
 	get checked() {
 		return this.source.checked;
@@ -111,6 +128,10 @@ const titlesCheckbox  = {
 
 	set checked(bool) {
 		this.source.checked = bool;
+	},
+
+	registerEventListener() {
+		this.source.addEventListener("click", this.onEvent);
 	}
 
 }
@@ -143,6 +164,18 @@ function toggleWrapCheckbox() {
 //arm wrap checkbox event listener
 wrapCheckbox.onEvent = toggleWrapCheckbox;
 wrapCheckbox.registerEventListener();
+
+
+//subscriber that reacts to toggling of "titles" checkbox
+function updatePrint() {
+	tabPrinter.printConfig = {returnTitles: titlesCheckbox.checked};
+	tabPrinter.print();
+}
+
+
+//arm "titles" checkbox event listener
+titlesCheckbox.onEvent = updatePrint;
+titlesCheckbox.registerEventListener();
 
 
 //handle communication with background script here.
