@@ -7,7 +7,7 @@
     "tabs"
   ],
   "background": {
-    "scripts": ["background/userDataBuffer.js","background/worker.js"]
+    "scripts": ["background/userDataBuffer.js","background/tabHandler.js","background/messageHandler.js"]
   },
   "icons": {
     "48": "icons/icon-48.png"

@@ -9,15 +9,17 @@ const userDataBuffer = {
 		titles: true
 	},
 
-	readUserData(windowId) {
+	async readUserData() {
+
+		const currentWindow = await browser.windows.getCurrent();
 
 		//if browser window has changed, clear input data
-		if (this.lastWindowId != windowId) {
+		if (this.lastWindowId != currentWindow.id) {
 			this.userData.input = "";
-			this.lastWindowId = windowId;
+			this.lastWindowId = currentWindow.id;
 		}
 
-		return this.userData;
+		browser.runtime.sendMessage({action: "readPrefs", status: "fulfilled", param: this.userData});
 
 	},
 
@@ -26,6 +28,5 @@ const userDataBuffer = {
 		this.userData = newUserData
 	
 	}
-
 }
 
