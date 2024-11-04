@@ -1,24 +1,23 @@
 const userDataAgent = {
 
-	setData(source) {
-		let prefs = {
-			input: source.textarea.value,
-			wrap: source.wrapCheckbox.checked,
-			titles: source.titlesCheckbox.checked
-		};
+	async getData(target) {
 
-		browser.runtime.sendMessage({action: "updatePrefs", status: "initiated", param: prefs});
-	},
-
-	printData(prefs, target) {
+		let prefs = await browser.runtime.sendMessage({action: "getUserData"});
 
 		target.textarea.value = prefs.input;
 		target.wrapCheckbox.checked = prefs.wrap;
 		target.titlesCheckbox.checked = prefs.titles;
 	},
 
-	getData() {
-		browser.runtime.sendMessage({action: "readPrefs", status: "initiated"});
+	async setData(source) {
+
+		let prefs = {
+			input: source.textarea.value,
+			wrap: source.wrapCheckbox.checked,
+			titles: source.titlesCheckbox.checked
+		};
+
+		browser.runtime.sendMessage({action: "setUserData", param: prefs});
 	}
 
 }

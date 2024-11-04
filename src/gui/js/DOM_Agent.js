@@ -86,12 +86,12 @@ const DOM_Elements = {
 }
 
 //read user prefs from background
-userDataAgent.getData();
+userDataAgent.getData(DOM_Elements);
 
 //event listeners:
 
 DOM_Elements.titlesCheckbox.onClicked(function(e) {
-	tabAgent.printTabs(null, DOM_Elements);
+	tabAgent.printTabs(DOM_Elements);
 });
 
 DOM_Elements.wrapCheckbox.onChecked(function(e) {
@@ -110,7 +110,7 @@ document.getElementById("reset_button").addEventListener("click", function(e) {
 
 //react to "get" button being clicked
 document.getElementById("get_button").addEventListener("click", function(e) {
-	tabAgent.getTabs()
+	tabAgent.getTabs(DOM_Elements);
 });
 
 //react to "open" button being clicked

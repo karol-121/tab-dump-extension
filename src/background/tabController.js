@@ -8,12 +8,12 @@ const tabController = {
       });
     }
 
-    browser.runtime.sendMessage({action: "open", status: "fulfilled"});
+    return Promise.resolve({success: true});
   },
 
   async getTabs() {
 
-    const openedTabs = await browser.tabs.query({ currentWindow: true }); //gets list of current opened tabs
+    const openedTabs = await browser.tabs.query({ currentWindow: true });
     const dumpedTabs = [];
 
     //strip uneeded information about the tabs
@@ -28,7 +28,7 @@ const tabController = {
     
     } 
 
-    browser.runtime.sendMessage({action: "get", status: "fulfilled", param: dumpedTabs});
+    return dumpedTabs;
   }
 
 }

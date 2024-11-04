@@ -7,7 +7,7 @@
     "tabs"
   ],
   "background": {
-    "scripts": ["background/userDataController.js","background/tabController.js","background/messageHandler.js"]
+    "scripts": ["background/userDataController.js","background/tabController.js","background/messageController.js"]
   },
   "icons": {
     "48": "icons/icon-48.png"

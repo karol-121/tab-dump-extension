@@ -1,10 +1,22 @@
 const tabAgent = {
 	dumpedTabs: [],
 
-	printTabs(tabs, target) {
+	async getTabs(target) {
 
-		if (tabs) {
-			this.dumpedTabs = tabs;
+		let tabs = await browser.runtime.sendMessage({action: "getTabs"});
+
+		//save current tabs for later use (i.e printTabs())
+		this.dumpedTabs = tabs;
+		this.printTabs(target);
+		
+	},
+
+	printTabs(target) {
+
+		console.log(this.dumpedTabs);
+		//if no dumped tabs is saved, do not proceed as it will clear textarea
+		if (this.dumpedTabs.length === 0) {
+			return;
 		}
 
 		const printConfig = {
@@ -12,16 +24,10 @@ const tabAgent = {
 		}
 
 		const text = printUrls(this.dumpedTabs, printConfig);
-		
 		target.textarea.value = text;
 	},
 
-	getTabs() {
-		//initiate a get-request for background worker
-		browser.runtime.sendMessage({action: "get", status: "initiated"});
-	},
-
-	setTabs(source) {
+	async setTabs(source) {
 		//check if current list/text does match with previous get, if so do not execute
 		//otherwise it will be possible to repeatedly open the same set of tabs, get print list of tabs that is possible to open	
 		if (!source.hasChanged()) {
@@ -29,16 +35,14 @@ const tabAgent = {
 		}
 
 		const text = source.value;
-
-		//get urls from user input
 		const urls = extractUrls(text);
 
-		//initiate a open-request for background worker
-		browser.runtime.sendMessage({action: "open", status: "initiated", param: urls});
-	},
-
-	afterTabsSet(target) {
-		target.textarea.reset();
+		let action = await browser.runtime.sendMessage({action: "setTabs", param: urls});		
+		
+		//clear textarea after successfull tabs opening
+		if (action.success) {
+			source.reset();
+		}
 	}
 
 }

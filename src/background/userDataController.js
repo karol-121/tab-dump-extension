@@ -19,13 +19,14 @@ const userDataController = {
 			this.lastWindowId = currentWindow.id;
 		}
 
-		browser.runtime.sendMessage({action: "readPrefs", status: "fulfilled", param: this.userData});
+		return this.userData;
 
 	},
 
 	setData(newUserData) {
 
-		this.userData = newUserData
+		this.userData = newUserData;
+		return Promise.resolve({success: true});
 	
 	}
 }
