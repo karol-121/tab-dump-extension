@@ -85,35 +85,103 @@ const DOM_Elements = {
 	}
 }
 
-//read user prefs from background
-userDataAgent.getData(DOM_Elements);
-
 //event listeners:
 
 DOM_Elements.titlesCheckbox.onClicked(function(e) {
-	tabAgent.printTabs(DOM_Elements);
+	//update text in textarea 
+
+	//do not update textarea after it was changed
+	if (DOM_Elements.textarea.hasChanged()) {
+		return;
+	}
+
+	//get last dumped tabs
+	let tabs = tabAgent.getLastTabs();
+	
+	//if no last dumped tabs exist, do not update textarea aswell
+	//otherwise it will restet text
+	if (tabs.length === 0) {
+		return;
+	}
+	
+	//update tabs print by changes to preferences
+	let printConfig = {
+		returnTitles: DOM_Elements.titlesCheckbox.checked
+	}
+	
+	//print tabs to textarea
+	DOM_Elements.textarea.value = textUtils.tabsToText(tabs, printConfig);
+
 });
 
 DOM_Elements.wrapCheckbox.onChecked(function(e) {
+
+	//turn on/off text wrapping in textarea
 	DOM_Elements.textarea.wrap = DOM_Elements.wrapCheckbox.checked;
+
+});
+
+
+//react to "reset" button being clicked
+document.getElementById("reset_button").addEventListener("click", function(e) {
+
+	DOM_Elements.textarea.reset();
+
+});
+
+//react to "get" button being clicked
+document.getElementById("get_button").addEventListener("click", async function(e) {
+
+	//get tabs from browser
+	let tabs = await tabAgent.getTabs(DOM_Elements);
+
+	//define how tabs should be printed in text
+	let printConfig = {
+		returnTitles: DOM_Elements.titlesCheckbox.checked
+	}
+
+	//print tabs to textarea
+	DOM_Elements.textarea.value = textUtils.tabsToText(tabs, printConfig);
+
+});
+
+//react to "open" button being clicked
+document.getElementById("open_button").addEventListener("click", async function(e) {
+
+	//set tabs in browser
+	let result = await tabAgent.setTabs(DOM_Elements.textarea);
+
+	//if setting tabs operation was successful, clear textarea
+	if (result.success) {
+		DOM_Elements.textarea.reset();
+	}
+
+});
+
+
+//get user prefs upon popup opening
+window.addEventListener("load", async function(e) {
+	//get user data from background
+	let prefs = await userDataAgent.getData(DOM_Elements);
+
+	//update DOM elements 
+	DOM_Elements.textarea.value = prefs.input;
+	DOM_Elements.wrapCheckbox.checked = prefs.wrap;
+	DOM_Elements.titlesCheckbox.checked = prefs.titles;
 });
 
 //send current user prefs to the background (where it will be saved) upon popup close
 window.addEventListener("pagehide", function(e) {
-	userDataAgent.setData(DOM_Elements);
-});
 
-//react to "reset" button being clicked
-document.getElementById("reset_button").addEventListener("click", function(e) {
-	DOM_Elements.textarea.reset();
-});
+	//collect user data from DOM elements
+	let prefs = {
+		input: DOM_Elements.textarea.value,
+		wrap: DOM_Elements.wrapCheckbox.checked,
+		titles: DOM_Elements.titlesCheckbox.checked
+	};
 
-//react to "get" button being clicked
-document.getElementById("get_button").addEventListener("click", function(e) {
-	tabAgent.getTabs(DOM_Elements);
-});
+	//set collected user data to storage
+	//also no await for setData result as the page will be hided anyways
+	userDataAgent.setData(prefs);
 
-//react to "open" button being clicked
-document.getElementById("open_button").addEventListener("click", function(e) {
-	tabAgent.setTabs(DOM_Elements.textarea);
 });
