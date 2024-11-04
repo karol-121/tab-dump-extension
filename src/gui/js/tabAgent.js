@@ -1,4 +1,4 @@
-const tabController = {
+const tabAgent = {
 	dumpedTabs: [],
 
 	printTabs(tabs, target) {
@@ -21,7 +21,7 @@ const tabController = {
 		browser.runtime.sendMessage({action: "get", status: "initiated"});
 	},
 
-	openTabs(source) {
+	setTabs(source) {
 		//check if current list/text does match with previous get, if so do not execute
 		//otherwise it will be possible to repeatedly open the same set of tabs, get print list of tabs that is possible to open	
 		if (!source.hasChanged()) {
@@ -37,7 +37,7 @@ const tabController = {
 		browser.runtime.sendMessage({action: "open", status: "initiated", param: urls});
 	},
 
-	afterOpenedTabs(target) {
+	afterTabsSet(target) {
 		target.textarea.reset();
 	}
 

@@ -10,15 +10,15 @@ function handleMessage(request, sender, response) {
 	if (request.status === "fulfilled") {
 
 		if (request.action === "get") {
-   		tabController.printTabs(request.param, DOM_Elements);
+   		tabAgent.printTabs(request.param, DOM_Elements);
   	}
 
   	if (request.action === "open") {
-   		tabController.afterOpenedTabs(DOM_Elements);
+   		tabAgent.afterTabsSet(DOM_Elements);
   	}
 
   	if (request.action === "readPrefs") {
-  		userData.apply(request.param, DOM_Elements);
+  		userDataAgent.printData(request.param, DOM_Elements);
   	}
 	}
 }

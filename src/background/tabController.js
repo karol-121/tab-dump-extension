@@ -1,6 +1,6 @@
-const tabHandler = {
+const tabController = {
 
-  openTabs(urls) {
+  setTabs(urls) {
     for (const url of urls) {
       browser.tabs.create({
         "url": url,
@@ -11,7 +11,7 @@ const tabHandler = {
     browser.runtime.sendMessage({action: "open", status: "fulfilled"});
   },
 
-  async getAllTabs() {
+  async getTabs() {
 
     const openedTabs = await browser.tabs.query({ currentWindow: true }); //gets list of current opened tabs
     const dumpedTabs = [];

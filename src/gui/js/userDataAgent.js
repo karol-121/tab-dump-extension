@@ -1,6 +1,6 @@
-const userData = {
+const userDataAgent = {
 
-	save(source) {
+	setData(source) {
 		let prefs = {
 			input: source.textarea.value,
 			wrap: source.wrapCheckbox.checked,
@@ -10,14 +10,14 @@ const userData = {
 		browser.runtime.sendMessage({action: "updatePrefs", status: "initiated", param: prefs});
 	},
 
-	apply(prefs, target) {
+	printData(prefs, target) {
 
 		target.textarea.value = prefs.input;
 		target.wrapCheckbox.checked = prefs.wrap;
 		target.titlesCheckbox.checked = prefs.titles;
 	},
 
-	load() {
+	getData() {
 		browser.runtime.sendMessage({action: "readPrefs", status: "initiated"});
 	}
 

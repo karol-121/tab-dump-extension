@@ -86,12 +86,12 @@ const DOM_Elements = {
 }
 
 //read user prefs from background
-userData.load();
+userDataAgent.getData();
 
 //event listeners:
 
 DOM_Elements.titlesCheckbox.onClicked(function(e) {
-	tabController.printTabs(null, DOM_Elements);
+	tabAgent.printTabs(null, DOM_Elements);
 });
 
 DOM_Elements.wrapCheckbox.onChecked(function(e) {
@@ -100,7 +100,7 @@ DOM_Elements.wrapCheckbox.onChecked(function(e) {
 
 //send current user prefs to the background (where it will be saved) upon popup close
 window.addEventListener("pagehide", function(e) {
-	userData.save(DOM_Elements);
+	userDataAgent.setData(DOM_Elements);
 });
 
 //react to "reset" button being clicked
@@ -110,10 +110,10 @@ document.getElementById("reset_button").addEventListener("click", function(e) {
 
 //react to "get" button being clicked
 document.getElementById("get_button").addEventListener("click", function(e) {
-	tabController.getTabs()
+	tabAgent.getTabs()
 });
 
 //react to "open" button being clicked
 document.getElementById("open_button").addEventListener("click", function(e) {
-	tabController.openTabs(DOM_Elements.textarea);
+	tabAgent.setTabs(DOM_Elements.textarea);
 });

@@ -1,5 +1,5 @@
 //Buffer for user entered data, this is needed as GUI window does "forget" them when reopened
-const userDataBuffer = {
+const userDataController = {
 	lastWindowId: 0,
 	
 	//default data
@@ -9,7 +9,7 @@ const userDataBuffer = {
 		titles: true
 	},
 
-	async readUserData() {
+	async getData() {
 
 		const currentWindow = await browser.windows.getCurrent();
 
@@ -23,7 +23,7 @@ const userDataBuffer = {
 
 	},
 
-	setUserData(newUserData) {
+	setData(newUserData) {
 
 		this.userData = newUserData
 	

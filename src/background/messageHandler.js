@@ -11,19 +11,19 @@ function handleMessage(request, sender, response) {
   if (request.status === "initiated") {
 
     if (request.action === "get") {
-      tabHandler.getAllTabs();
+      tabController.getTabs();
     }
 
     if (request.action === "open") {
-      tabHandler.openTabs(request.param);
+      tabController.setTabs(request.param);
     }
 
     if (request.action === "updatePrefs") {
-      userDataBuffer.setUserData(request.param);
+      userDataController.setData(request.param);
     }
 
     if (request.action === "readPrefs") {
-      userDataBuffer.readUserData();
+      userDataController.getData();
     }
   }
 
