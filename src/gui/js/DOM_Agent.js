@@ -13,6 +13,10 @@ const DOM_Elements = {
 			this.lastValue = value;
 		},
 
+		initializeWith(value) {
+			this.source.value = value;
+		},
+
 		get wrap() {
 
 			if (this.source.wrap === "on") {
@@ -165,7 +169,7 @@ window.addEventListener("load", async function(e) {
 	let prefs = await userDataAgent.getData(DOM_Elements);
 
 	//update DOM elements 
-	DOM_Elements.textarea.value = prefs.input;
+	DOM_Elements.textarea.initializeWith(prefs.input); //use initializeWith as it does not set "haschanged" to false
 	DOM_Elements.wrapCheckbox.checked = prefs.wrap;
 	DOM_Elements.titlesCheckbox.checked = prefs.titles;
 });
