@@ -184,6 +184,12 @@ window.addEventListener("pagehide", function(e) {
 		titles: DOM_Elements.titlesCheckbox.checked
 	};
 
+	//if text has not been changed since last dump, do not save it
+	//as there is no point of doing it
+	if (!DOM_Elements.textarea.hasChanged()) {
+		prefs.input = "";
+	}
+
 	//set collected user data to storage
 	//also no await for setData result as the page will be hided anyways
 	userDataAgent.setData(prefs);
