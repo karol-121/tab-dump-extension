@@ -162,7 +162,7 @@ document.getElementById("get_current_button").addEventListener("click", async fu
 
 	//print tab to textarea
 	DOM_Elements.textarea.value = textUtils.tabsToText(tab, printConfig);
-	
+
 });
 
 //react to "open" button being clicked
@@ -178,6 +178,18 @@ document.getElementById("open_button").addEventListener("click", async function(
 
 });
 
+document.getElementById("overwrite_button").addEventListener("click", async function(e) {
+	
+	//set tabs in browser
+	let result = await tabAgent.overwriteTabs(DOM_Elements.textarea);
+
+	//if setting tabs operation was successful, clear textarea
+	if (result.success) {
+		DOM_Elements.textarea.reset();
+	}
+
+
+});
 
 //get user prefs upon popup opening
 window.addEventListener("load", async function(e) {

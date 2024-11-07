@@ -17,6 +17,10 @@ function handleMessage(request, sender, response) {
       return tabController.setTabs(request.param);
     }
 
+    if (request.action === "overwriteTabs") {
+      return tabController.overwriteTabs(request.param);
+    }
+
     if (request.action === "getUserData") {
       return userDataController.getData();
     }

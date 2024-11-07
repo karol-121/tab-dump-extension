@@ -1,6 +1,7 @@
 const tabController = {
 
   setTabs(urls) {
+
     for (const url of urls) {
       browser.tabs.create({
         "url": url,
@@ -9,6 +10,29 @@ const tabController = {
     }
 
     return Promise.resolve({success: true});
+
+  },
+
+  //todo: find better name for this function
+  async overwriteTabs(urls) {
+
+    //save intitial tab set
+    const intialTabSet = await browser.tabs.query({ currentWindow:true });
+
+    for (const url of urls) {
+      browser.tabs.create({
+        "url": url,
+        "discarded": true
+      });
+    }
+
+    //close all intitial tabs
+    for (const intitalTab of intialTabSet) {
+      browser.tabs.remove(intitalTab.id);
+    }
+
+    return Promise.resolve({success: true});
+
   },
 
   async getTabs() {
@@ -20,7 +44,7 @@ const tabController = {
 
   async getCurrentTab() {
 
-    const currentTab = await browser.tabs.query({currentWindow: true, active: true});
+    const currentTab = await browser.tabs.query({ currentWindow: true, active: true });
     return this.formatTabs(currentTab);
 
   },
