@@ -1,7 +1,7 @@
 const tabAgent = {
 	lastTabs: [],
 
-	async getTabs(target) {
+	async getTabs() {
 
 		let tabs = await browser.runtime.sendMessage({action: "getTabs"});
 
@@ -10,6 +10,16 @@ const tabAgent = {
 		
 		return this.lastTabs;
 		
+	},
+
+	async getCurrentTab() {
+		
+		let tab = await browser.runtime.sendMessage({action: "getCurrentTab"});
+
+		//update lastTabs with current fetch
+		this.lastTabs = tab;
+
+		return this.lastTabs;
 	},
 
 	getLastTabs() {

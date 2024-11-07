@@ -9,6 +9,10 @@ function handleMessage(request, sender, response) {
       return tabController.getTabs();
     }
 
+    if (request.action === "getCurrentTab") {
+      return tabController.getCurrentTab();
+    }
+
     if (request.action === "setTabs") {
       return tabController.setTabs(request.param);
     }

@@ -137,7 +137,7 @@ document.getElementById("reset_button").addEventListener("click", function(e) {
 document.getElementById("get_button").addEventListener("click", async function(e) {
 
 	//get tabs from browser
-	let tabs = await tabAgent.getTabs(DOM_Elements);
+	let tabs = await tabAgent.getTabs();
 
 	//define how tabs should be printed in text
 	let printConfig = {
@@ -147,6 +147,22 @@ document.getElementById("get_button").addEventListener("click", async function(e
 	//print tabs to textarea
 	DOM_Elements.textarea.value = textUtils.tabsToText(tabs, printConfig);
 
+});
+
+//react to "get_current" button being clicked
+document.getElementById("get_current_button").addEventListener("click", async function(e) {
+	
+	//get current tab from browser
+	let tab = await tabAgent.getCurrentTab();
+
+	//define how tab should be printed in text
+	let printConfig = {
+		returnTitles: DOM_Elements.titlesCheckbox.checked
+	}
+
+	//print tab to textarea
+	DOM_Elements.textarea.value = textUtils.tabsToText(tab, printConfig);
+	
 });
 
 //react to "open" button being clicked

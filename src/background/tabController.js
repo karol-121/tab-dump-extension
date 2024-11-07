@@ -14,21 +14,34 @@ const tabController = {
   async getTabs() {
 
     const openedTabs = await browser.tabs.query({ currentWindow: true });
-    const dumpedTabs = [];
+    return this.formatTabs(openedTabs);
+    
+  },
+
+  async getCurrentTab() {
+
+    const currentTab = await browser.tabs.query({currentWindow: true, active: true});
+    return this.formatTabs(currentTab);
+
+  },
+
+  formatTabs(tabs) {
+    const formattedTabs = [];
 
     //strip uneeded information about the tabs
-    for (const openedTab of openedTabs) {
+    for (const tab of tabs) {
 
-      const dumpedTab = {
-        url: openedTab.url,
-        title: openedTab.title
+      const formattedTab = {
+        url: tab.url,
+        title: tab.title
       }
     
-      dumpedTabs.push(dumpedTab);
+      formattedTabs.push(formattedTab);
     
     } 
 
-    return dumpedTabs;
+    return formattedTabs;
+
   }
 
 }
