@@ -1,0 +1,83 @@
+body {
+	background-color: #ffffff;
+	color: #15141a;
+}
+
+hr {
+	background-color: #d7d7db;
+}
+
+button {
+	color: #15141a;
+	background-color: #eeeeee;
+	border-color: #eeeeee;
+}
+
+.button-muted {
+	background-color: #ffffff;
+	border-color: #ffffff;
+}
+
+button:hover {
+	background-color: #ceced0;
+	border-color: #ceced0;
+}
+
+button:focus-visible {
+	outline-color: #0060df;
+}
+
+textarea {
+	background-color: #ffffff;
+	border-color: #9e9ea0;
+	color: #15141a;
+}
+
+textarea:focus {
+	outline-color: #0060df;
+}
+
+
+/*dark mode overrides*/
+@media (prefers-color-scheme: dark) {
+	body {
+		background-color: #42404d;
+		color: #fbfbfe;
+	}
+
+	hr {
+		background-color: #4e4d54;
+	}
+
+	button {
+		color: #fbfbfe;
+		background-color: #2b2934;
+		border-color: #2b2934;
+	}
+
+	.button-muted {
+		background-color: #42404d;
+		border-color: #42404d;
+	}
+
+	button:hover {
+		background-color: #5d5c6e;
+		border-color: #5d5c6e;
+	}
+
+	button:focus-visible {
+		outline-color: #00ddff;
+	}
+
+	textarea {
+		background-color: #2b2a32;
+		border-color: #7c7b82;
+		color: #fbfbfe;
+	}
+
+	textarea:focus {
+		outline-color: #00ddff;
+	}
+
+}
+

@@ -1,10 +1,57 @@
 body {
+	margin: 0.4em;
 	font-family: 'arial', sans-serif;
+	font-size: 14px;
 	display: flex;
 	flex-direction: column;
 }
 
+hr {
+	width: 100%;
+	height: 1px;
+	border: none;
+}
 
+h3 {
+	display: block;
+	text-align: center;
+	margin: 0.3em 0;
+}
+
+textarea {
+	font-family: 'arial', sans-serif;
+	font-size: 14px;
+	width: 380px;
+	height: 400px;
+	resize: none;
+	margin: 0.2em;
+	padding: 0.4em;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 0.3em;
+}
+
+textarea:focus {
+	outline-width: 2px;
+	outline-offset: 2px;
+	outline-style: solid;
+}
+
+button {
+	font-size: 14px;
+	margin: 0.2em;
+	padding: 0.2em 0.4em;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 0.3em;
+	text-align: center;
+}
+
+button:focus-visible {
+	outline-width: 2px;
+	outline-offset: 2px;
+	outline-style: solid;
+}
 
 .form-options {
 	display: flex;
@@ -12,21 +59,8 @@ body {
 }
 
 .form-option {
-	/*flex-grow: 1;*/
-}
-
-
-
-.action-input {
-
-	margin: 0.75em 0;
-
-	font-family: 'consolas', sans-serif;
-	width: 380px;
-	height: 400px;
-	resize: none;
-
-
+	margin: 0.2em;
+	padding: 0.2em 0em;
 }
 
 .action-buttons {

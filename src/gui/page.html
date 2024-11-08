@@ -4,32 +4,30 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="page.css">
-	<title>Tab dump</title>
-	
+	<link rel="stylesheet" type="text/css" href="page-color.css">
+	<title>Tab dump - Extension</title>	
 </head>
 <body>
-	<h3>Open or dump tabs</h3>
-	
+	<h3>Tab dump - Extension</h3>
+	<hr>
 	<div>
 		<div class="form-options">
 			<div class="form-option">
 				<input id="wrap" type="checkbox" checked></input>
-				<label for="wrap">Wrap urls</label>
+				<label for="wrap">Wrap lines</label>
 				<input id="titles" type="checkbox"></input>
 				<label for="titles">Tab titles</label>
 			</div>
-			<button id="reset_button" class="form-option">Clear list</button>
+			<button id="reset_button" class="button-muted">Clear list</button>
 		</div>
 		<textarea id="text" class="action-input" wrap="on" placeholder="Input urls here..." ></textarea>
 	</div>
-
 	<div class="action-buttons">
-		<button id="get_button" class="action-button">▼ Dump tabs</button>
-		<button id="get_current_button" class="action-button">▼ Dump current</button>
-		<button id="set_button" class="action-button">▲ Open tabs</button>
-		<button id="set_new_button" class="action-button">▲ Overwrite tabs</button>
+		<button id="get_button" class="action-button">⮟ Get</button>
+		<button id="get_current_button" class="action-button">⮟ Current</button>
+		<button id="set_new_button" class="action-button">⮝ Open</button>
+		<button id="set_button" class="action-button">⮝ Add</button>
 	</div>
-	
 	<script src="js/utils.js"></script>
 	<script src="js/userDataAgent.js"></script>
 	<script src="js/tabAgent.js"></script>
