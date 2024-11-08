@@ -26,7 +26,7 @@ const tabAgent = {
 		return this.lastTabs;
 	},
 
-	async setTabs(source) {
+	async setToExistingTabs(source) {
 		//check if current list/text does match with previous get, if so do not execute
 		//otherwise it will be possible to repeatedly open the same set of tabs, get print list of tabs that is possible to open	
 		if (!source.hasChanged()) {
@@ -36,11 +36,11 @@ const tabAgent = {
 		const text = source.value;
 		const urls = textUtils.textToUrls(text);
 
-		let action = await browser.runtime.sendMessage({action: "setTabs", param: urls});
+		let action = await browser.runtime.sendMessage({action: "setToExistingTabs", param: urls});
 		return action;
 	},
 
-	async overwriteTabs(source) {
+	async setNewTabs(source) {
 		//check if current list/text does match with previous get, if so do not execute
 		//otherwise it will be possible to repeatedly open the same set of tabs, get print list of tabs that is possible to open	
 		if (!source.hasChanged()) {
@@ -50,7 +50,7 @@ const tabAgent = {
 		const text = source.value;
 		const urls = textUtils.textToUrls(text);
 
-		let action = await browser.runtime.sendMessage({action: "overwriteTabs", param: urls});
+		let action = await browser.runtime.sendMessage({action: "setNewTabs", param: urls});
 		return action;
 	}
 

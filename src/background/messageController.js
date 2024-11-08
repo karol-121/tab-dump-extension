@@ -13,12 +13,12 @@ function handleMessage(request, sender, response) {
       return tabController.getCurrentTab();
     }
 
-    if (request.action === "setTabs") {
-      return tabController.setTabs(request.param);
+    if (request.action === "setToExistingTabs") {
+      return tabController.setToExistingTabs(request.param);
     }
 
-    if (request.action === "overwriteTabs") {
-      return tabController.overwriteTabs(request.param);
+    if (request.action === "setNewTabs") {
+      return tabController.setNewTabs(request.param);
     }
 
     if (request.action === "getUserData") {

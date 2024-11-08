@@ -1,6 +1,7 @@
 const tabController = {
 
-  setTabs(urls) {
+  //Append new tabs to existing ones
+  setToExistingTabs(urls) {
 
     for (const url of urls) {
       browser.tabs.create({
@@ -9,14 +10,14 @@ const tabController = {
       });
     }
 
-    return Promise.resolve({success: true});
+    return Promise.resolve({ success: true });
 
   },
 
-  //todo: find better name for this function
-  async overwriteTabs(urls) {
+  //Overwrite current tabs with new ones
+  async setNewTabs(urls) {
 
-    //save intitial tab set
+    //save initial tab set
     const intialTabSet = await browser.tabs.query({ currentWindow:true });
 
     for (const url of urls) {
@@ -26,12 +27,12 @@ const tabController = {
       });
     }
 
-    //close all intitial tabs
+    //close all initial tabs
     for (const intitalTab of intialTabSet) {
       browser.tabs.remove(intitalTab.id);
     }
 
-    return Promise.resolve({success: true});
+    return Promise.resolve({ success: true });
 
   },
 
@@ -52,7 +53,7 @@ const tabController = {
   formatTabs(tabs) {
     const formattedTabs = [];
 
-    //strip uneeded information about the tabs
+    //strip unnecessary attributes
     for (const tab of tabs) {
 
       const formattedTab = {

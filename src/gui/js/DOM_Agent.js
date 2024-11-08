@@ -166,10 +166,10 @@ document.getElementById("get_current_button").addEventListener("click", async fu
 });
 
 //react to "open" button being clicked
-document.getElementById("open_button").addEventListener("click", async function(e) {
+document.getElementById("set_button").addEventListener("click", async function(e) {
 
 	//set tabs in browser
-	let result = await tabAgent.setTabs(DOM_Elements.textarea);
+	let result = await tabAgent.setToExistingTabs(DOM_Elements.textarea);
 
 	//if setting tabs operation was successful, clear textarea
 	if (result.success) {
@@ -178,10 +178,10 @@ document.getElementById("open_button").addEventListener("click", async function(
 
 });
 
-document.getElementById("overwrite_button").addEventListener("click", async function(e) {
+document.getElementById("set_new_button").addEventListener("click", async function(e) {
 	
 	//set tabs in browser
-	let result = await tabAgent.overwriteTabs(DOM_Elements.textarea);
+	let result = await tabAgent.setNewTabs(DOM_Elements.textarea);
 
 	//if setting tabs operation was successful, clear textarea
 	if (result.success) {
