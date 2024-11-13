@@ -17,6 +17,11 @@ const tabController = {
   //Overwrite current tabs with new ones
   async setNewTabs(urls) {
 
+    //if there is no urls to be set, exit early
+    if (urls.length === 0) {
+      return Promise.resolve({ success: false });
+    }
+
     //save initial tab set
     const intialTabSet = await browser.tabs.query({ currentWindow:true });
 
