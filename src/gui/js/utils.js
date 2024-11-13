@@ -23,6 +23,10 @@ const textUtils = {
 
 		}
 
+		if (outputText === "") {
+			outputText = "#Error: Nothing to be show - some urls are restricted!"
+		}
+
 		return outputText;
 
 	},
