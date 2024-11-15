@@ -2,6 +2,7 @@
   "name": "Tab dump",
   "description": "Allows to dump to and open tabs from text list",
   "manifest_version": 2,
+  "version": "2",
   "permissions": [
     "find",
     "tabs"
@@ -18,11 +19,5 @@
         "48": "icons/icon-48.png"
     },
     "default_popup": "gui/page.html"
-  },
-  "version": "2",
-  "browser_specific_settings": {
-    "gecko": {
-      "strict_min_version": "57.0a1"
-    }
   }
 }
